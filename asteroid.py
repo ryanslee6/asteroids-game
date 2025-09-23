@@ -4,7 +4,6 @@ from main import *
 
 
 class Asteroid(CircleShape):
-    #containers = None
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         pygame.sprite.Sprite.__init__(self, self.containers)
