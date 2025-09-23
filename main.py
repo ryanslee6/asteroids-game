@@ -11,7 +11,9 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+    font = pygame.font.Font(None, 36)
     dt = 0
+    score = 0
     
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -57,6 +59,13 @@ def main():
                 if shot.collides_with(asteroid):
                     shot.kill()
                     asteroid.split()
+                    score += 1
+
+        fps_text = font.render(f"FPS: {int(clock.get_fps())}", True, (255, 255, 255))
+        screen.blit(fps_text, (10, 10))
+
+        score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+        screen.blit(score_text, (10, 50))
 
         pygame.display.flip()
         dt = clock.tick(60) / 1000
