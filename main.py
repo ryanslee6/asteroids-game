@@ -17,6 +17,7 @@ def main():
     dt = 0
     score = 0
     
+    
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -30,16 +31,26 @@ def main():
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
 
+    paused = False
     running = True
+    
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    paused = not paused
         
         screen.blit(background, (0, 0))
         
+        if not paused:
+            updatable.update(dt)
 
-        updatable.update(dt)
+        if paused:
+            font = pygame.font.SysFont(None, 74)
+            text = font.render("Paused. Press 'p' to continue.", True, (255, 255, 255))
+            screen.blit(text, (SCREEN_WIDTH//2 - text.get_width()//2, SCREEN_HEIGHT//2 - text.get_height()//2))
         
         for sprite in drawable:
             sprite.draw(screen)
