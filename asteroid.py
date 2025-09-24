@@ -23,20 +23,24 @@ class Asteroid(CircleShape):
         self.points = generate_lumpy_shape(radius)
         self.x = x
         self.y = y
+        self.rotation = 0
+        self.rotation_speed = random.uniform(-250, 250)
 
     def draw(self, screen):
-        translated_points = [
-            (self.position.x + x, self.position.y + y) for (x, y) in self.points
-        ]
+        rotated_points = []
+        for (x, y) in self.points:
+            vec = pygame.Vector2(x, y).rotate(self.rotation)
+            rotated_points.append((self.position.x + vec.x, self.position.y + vec.y))
         pygame.draw.polygon(
             screen,
             "white",
-            translated_points,
+            rotated_points,
             2
         )
 
     def update(self, dt):
         self.position += self.velocity * dt
+        self.rotation += self.rotation * dt
 
     def split(self):
         self.kill()

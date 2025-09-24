@@ -12,6 +12,8 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
+    background = pygame.image.load("Nebula_in_the_Cosmos.png")
+    background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
     dt = 0
     score = 0
     
@@ -34,7 +36,7 @@ def main():
             if event.type == pygame.QUIT:
                 return
         
-        screen.fill((0, 0, 0))
+        screen.blit(background, (0, 0))
         
 
         updatable.update(dt)
