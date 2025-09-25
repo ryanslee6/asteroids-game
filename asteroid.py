@@ -60,3 +60,26 @@ class Asteroid(CircleShape):
         asteroid2 = Asteroid(self.position.x, self.position.y, new_radius)
         asteroid2.velocity = new_velocity2 * 1.2
 
+    def explode(self):
+        for _ in range(20):
+            Particle(self.position, color="orange")
+
+class Particle(pygame.sprite.Sprite):
+    def __init__(self, position, color="white"):
+        super().__init__(self.containers)
+        self.position = pygame.Vector2(position)
+        self.velocity = pygame.Vector2(random.uniform(-1, 1), random.uniform(-1, 1)) * random.uniform(50, 150)
+        self.radius = random.randint(2, 4)
+        self.lifetime = random.uniform(0.5, 1.0)
+        self.color = color
+
+    def update(self, dt):
+        self.position += self.velocity * dt
+        self.radius -= dt * 4
+        self.lifetime -= dt
+        if self.radius <= 0 or self.lifetime <= 0:
+            self.kill()
+
+    def draw(self, screen):
+        if self.radius > 0:
+            pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), int(self.radius))

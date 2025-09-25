@@ -22,11 +22,13 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    particles = pygame.sprite.Group()
     
     Asteroid.containers = (asteroids, updatable, drawable)
     Player.containers = (updatable, drawable)
     AsteroidField.containers = (updatable, )
     Shot.containers = (shots, updatable, drawable)
+    Particle.containers = (particles, )
     
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
@@ -46,6 +48,7 @@ def main():
         
         if not paused:
             updatable.update(dt)
+            particles.update(dt)
 
         if paused:
             font = pygame.font.SysFont(None, 74)
@@ -55,22 +58,20 @@ def main():
         for sprite in drawable:
             sprite.draw(screen)
 
+        for particle in particles:
+            particle.draw(screen)
+
         for asteroid in asteroids:
             if player.collides_with(asteroid):
                 print("Game over!")
                 pygame.quit()
                 sys.exit()
 
-        #for asteroid in asteroids:
-        #    for shot in shots:
-        #        if asteroid.collides_with(shot):
-        #            asteroid.kill()
-        #            shot.kill()
-
         for asteroid in asteroids:
             for shot in shots:
                 if shot.collides_with(asteroid):
                     shot.kill()
+                    asteroid.explode()
                     asteroid.split()
                     score += 1
 
